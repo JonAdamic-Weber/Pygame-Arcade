@@ -72,6 +72,8 @@ class Arcade():
         pygame.display.set_caption(self.title)
         window = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
         clock = pygame.time.Clock()
+        users = ["User 1", "User 2"]
+        _selected_user = 0
 
         # Main menu loop
         while True:
@@ -85,7 +87,7 @@ class Arcade():
                 game_title = font.render(game.__name__, True, COLOR_GRAY)
                 window.blit(
                     game_title,
-                    (WINDOW_WIDTH/8, WINDOW_HEIGHT/3 + (index * 100))
+                    (WINDOW_WIDTH/8, WINDOW_HEIGHT/4 + (index * 75))
                 )
 
             # Highlight the selected game in white.
@@ -97,8 +99,19 @@ class Arcade():
             )
             window.blit(
                 selected_game_title,
-                (WINDOW_WIDTH/8, WINDOW_HEIGHT/3 + (self._current_game_index * 100))
+                (WINDOW_WIDTH/8, WINDOW_HEIGHT/4 + (self._current_game_index * 75))
             )
+
+            # Draw username prompts and input boxes
+            small_font = pygame.font.Font(None, 36)
+            player1_prompt = small_font.render("Player 1: ", True, COLOR_WHITE)
+            player2_prompt = small_font.render("Player 2: ", True, COLOR_WHITE)
+            window.blit(player1_prompt, (WINDOW_WIDTH/8, WINDOW_HEIGHT * .85))
+            window.blit(player2_prompt, (WINDOW_WIDTH/8, WINDOW_HEIGHT * .90))
+            user1 = small_font.render(users[0], True, COLOR_WHITE)
+            user2 = small_font.render(users[1], True, COLOR_WHITE)
+            window.blit(user1, (WINDOW_WIDTH/4 + 15, WINDOW_HEIGHT * .85))
+            window.blit(user2, (WINDOW_WIDTH/4 + 15, WINDOW_HEIGHT * .90))
 
             # Flip the display (update the screen) and advance the clock.
             pygame.display.flip()
@@ -126,16 +139,28 @@ class Arcade():
 
                     # If the user presses enter, start the selected game.
                     elif event.key == pygame.K_RETURN:
-                        contine_running = self.play_game()
+                        contine_running = self.play_game(usernames=users)
                         # If the game returns False, quit the arcade.
                         if not contine_running:
                             return
 
-    def play_game(self):
+                    # If the user presses tab, switch the selected user.
+                    elif event.key == pygame.K_TAB:
+                        # Switch selection to take input for player 1 or player 2
+                        _selected_user = (_selected_user + 1) % 2
+                    elif event.key == pygame.K_BACKSPACE:
+                        # Remove the last character from the selected user's name
+                        users[_selected_user] = users[_selected_user][:-1]
+                    else:
+                        # Add the character to the selected user's name
+                        users[_selected_user] += event.unicode
+
+
+    def play_game(self, **kwargs):
         """Create an instance of the current game and run it.
         DO NOT MODIFY ANYTHING IN THIS FUNCTION."""
         # Get the current game from the list of games, and Instantiate it.
-        game = self._games[self._current_game_index]()
+        game = self._games[self._current_game_index](**kwargs)
         return game.run()
 
     def run(self):
