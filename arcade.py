@@ -16,7 +16,7 @@ Ie: games/pong/pong.py
 (You may add more games if you wish, but you must implement at least two games.)
 Each game should have a class with the same name as the game file.
 Each game class should have a run method that starts the game loop.
-Ie: the class Pony in games/pong/pong.py has a run method that starts the game loop.
+Ie: the class Pong in games/pong/pong.py has a run method that starts the game loop.
 
 ALL OTHER IMPLEMENTATION DETAILS ARE UP TO YOU. BE CREATIVE AND HAVE FUN!
 Feel free to use any of the code from the midterm project as a starting point.
