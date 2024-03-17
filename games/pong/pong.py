@@ -39,8 +39,13 @@ COLOR_BLACK = (0, 0, 0)
 
 class Pong():
     """A class to handle the game logic and state of Pong."""
-    def __init__(self):
+    def __init__(self, **kwargs):
         """Initialize the game state.
+
+        Parameters
+        ----------
+        **usernames: list (str)
+            A list of usernames (use usernames[0] for the left player, etc)
 
         TODO: IMPLEMENT THIS FUNCTION. You may want to reference the commented
         out code below to help you get started, but you may implement this
